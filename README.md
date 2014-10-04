@@ -6,8 +6,8 @@ Identify indels from BAM files.
 ## REQUIREMENTS
 indelMINER should work on any standard 64 bit Linux environment with 
 
-a) GCC
-b) zlib (http://zlib.net)
+- GCC
+- zlib (http://zlib.net)
 
 ## ACKNOWLEDGEMENTS
 indelMINER uses Paul Hsieh's Superfasthash (http://www.azillionmonkeys.com/qed/hash.html) hash function. The hash function is encapsulated in the source file superfasthash.c within this distribution.
@@ -60,8 +60,9 @@ you are attempting to run on a different platform.
 To run indelMINER on the provided BAM file, do the following (in the test\_data
 folder)
 
+```
 ./../indelminer reference.fa sample=alignments.bam > indelminer.flt.vcf
-
+```
 
 The expected output is provided in the file "indelminer.expected.vcf".  You can 
 do a simple "diff" to compare the output in "indelminer.expected.vcf" to the 
@@ -91,6 +92,7 @@ There is a file called indelminer.config in your test\_data directory which
 specifies these values for the BAM file included with the distribution. In order
 to use it in a run of indelMINER, please do the following:
 
+```
 ./../indelminer -i indelminer.config reference.fa sample=alignments.bam > indelminer.flt.vcf
-
+```
 
