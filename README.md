@@ -26,19 +26,19 @@ manipulate files in the BAM (Binary Alignment/Mapping) format.
 Please add the full path of your SAMtools installation to the Makefile in the 
 distribution folder. For example, If your SAMtools installation is at 
 /home/foo/samtools-0.1.18, then please replace the lines
-
+```
 INCDIR = 
 LNKDIR = 
-
+```
 with the following in the Makefile
-
+```
 INCDIR = /home/foo/samtools-0.1.18
 LNKDIR = /home/foo/samtools-0.1.18
-
+```
 Then, type:
-
+```
 make 
-
+```
 This should create an binary named indelminer in the "src" folder. Add the "src"
 folder to your PATH or use the full path to the binay when running indelMINER
 
