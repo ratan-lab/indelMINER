@@ -40,7 +40,7 @@ Then, type:
 make 
 ```
 This should create an binary named indelminer in the "src" folder. Add the "src"
-folder to your PATH or use the full path to the binay when running indelMINER
+folder to your PATH or use the full path to the binary when running indelMINER
 
 ## TEST-DATASET
 The test\_data directory contains the following files
@@ -61,7 +61,7 @@ To run indelMINER on the provided BAM file, do the following (in the test\_data
 folder)
 
 ```
-./../indelminer reference.fa sample=alignments.bam > indelminer.flt.vcf
+./../src/indelminer reference.fa sample=alignments.bam > indelminer.flt.vcf
 ```
 
 The expected output is provided in the file "indelminer.expected.vcf".  You can 
@@ -93,6 +93,6 @@ specifies these values for the BAM file included with the distribution. In order
 to use it in a run of indelMINER, please do the following:
 
 ```
-./../indelminer -i indelminer.config reference.fa sample=alignments.bam > indelminer.flt.vcf
+./../src/indelminer -i indelminer.config reference.fa sample=alignments.bam > indelminer.flt.vcf
 ```
 
