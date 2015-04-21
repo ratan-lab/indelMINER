@@ -541,8 +541,10 @@ static void print_deletion_output(const variant* const variant,
     uint supindx;
     for(supindx = 0; supindx < variant->support; supindx++){
         evidence* evdnc = variant->evidence[supindx];
-        if(evdnc->type == PAIRED_READ) continue;
-
+        if(evdnc->type == PAIRED_READ) {
+            printf("%s\n", evdnc->qname);
+            continue;
+        }
         readseg* seg1 = evdnc->aln1;
         // proceed to the read segment which can be shown
         readseg* iter;
@@ -1146,6 +1148,7 @@ void merge_variants(variant** pvs,
 
         for(iter2 = vs; iter2; iter2 = iter2->next){
             if(iter2->start > iter1->stop) break;
+            if(iter2->evdnctype == PAIRED_READ) continue;
 
             uint olapf = 0;
             uint olap = 0;
@@ -1179,8 +1182,13 @@ void merge_variants(variant** pvs,
         }
 
         if(candidate != NULL && tomerge == TRUE){
-            candidate->support += iter1->support;       
+            candidate->support += iter1->support;   
+            if ((candidate->evdnctype == PAIRED_READ && 
+                 iter1->evdnctype == SPLIT_READ)     || 
+                (candidate->evdnctype == SPLIT_READ  && 
+                 iter1->evdnctype == PAIRED_READ))  {
             candidate->evdnctype = COMPOSITE;
+            }
             candidate->evidence = ckrealloc(candidate->evidence,
                                   candidate->support * sizeof(evidence*));
 

@@ -268,6 +268,11 @@ static readaln* find_mate_rln(const char* const bam_name,
     bam_close(fp);
     bam_index_destroy(fp_index);
 
+    // if I did not find the mate, then I should return NULL
+    if (rln->segments == NULL) {
+        ckfree(rln);
+        return NULL;
+    }
     return rln;
 }
 
@@ -376,7 +381,18 @@ static int fetch_func(const bam1_t* alignment, void* data)
         // attempt to align the unaligned read such that one segment of this read
         // aligns within PE distance of the aligned read, and the other segment
         // aligns within PE distance of that.
-        int mmq = bam_aux2i(bam_aux_get(alignment, "MQ"));
+        uint8_t* pmmq = bam_aux_get(alignment, "MQ");
+        int mmq;
+        if (pmmq == NULL) {
+            // in this case the aligner did not tell me about the mates
+            // mapping quality. Lets assume it is the same as that of 
+            // this sequence      
+            mmq = alignment->core.qual;
+        } else {
+            forceassert(pmmq[0] == 'i');
+            mmq = bam_aux2i(pmmq);
+        }
+
         if(mmq >= qthreshold){
             readaln* rln = new_unaligned_readaln(alignment, mmq);
             if(!is_mate_rc){
@@ -438,7 +454,17 @@ static int fetch_func(const bam1_t* alignment, void* data)
                 // do nothing
             }else{
                 // lets realign the read and try to call the indels
-                int mmq = bam_aux2i(bam_aux_get(alignment, "MQ"));
+                uint8_t* pmmq = bam_aux_get(alignment, "MQ");
+                int mmq;
+                if (pmmq == NULL) {
+                    // in this case the aligner did not tell me about the mates
+                    // mapping quality. Lets assume it is the same as that of 
+                    // this sequence
+                    mmq = alignment->core.qual;
+                } else {
+                    forceassert(pmmq[0] == 'i');
+                    mmq = bam_aux2i(pmmq);
+                }
                 if(mmq >= qthreshold){
                     bwaevdnc = check_variants(rln);
 
@@ -518,23 +544,29 @@ static int fetch_func(const bam1_t* alignment, void* data)
                                                  alignment->core.mpos,
                                (alignment->core.flag & 0x40) == 0x40 ? '2' : '1',
                                                  bam1_qname(alignment));
-                    forceassert(rln != NULL);
-                    evdnc = new_evidence(rln,
-                                         NULL,
-                                         DELETION,
-                                         PAIRED_READ); 
-                    // the mapping quality of the evidence is the minimum of the
-                    // mapping qualities of its reads
-                    if(alignment->core.qual < evdnc->qual){
-                        evdnc->qual = alignment->core.qual;
-                    }
+                    // if I could not find the mate, then this is an issue with
+                    // the BAM file. I should just ignore this evidence in that
+                    // case after I print a warning to the user.
+                    if (rln == NULL) {
+                        goto next; 
+                    } else {
+                        evdnc = new_evidence(rln,
+                                             NULL,
+                                             DELETION,
+                                             PAIRED_READ); 
+                        // the mapping quality of the evidence is the minimum of 
+                        // the mapping qualities of its reads
+                        if(alignment->core.qual < evdnc->qual){
+                            evdnc->qual = alignment->core.qual;
+                        }
 
-                    add_hashtable(readpairs,
-                                  rln->qname,
-                                  alignment->core.l_qname,
-                                  evdnc);
-                    ckfree(rln->qname);
-                    ckfree(rln);
+                        add_hashtable(readpairs,
+                                      rln->qname,
+                                      alignment->core.l_qname,
+                                      evdnc);
+                        ckfree(rln->qname);
+                        ckfree(rln);
+                    }
                 }   
 
                 readaln* rln = new_readaln(alignment);
@@ -546,12 +578,23 @@ static int fetch_func(const bam1_t* alignment, void* data)
                 evdnc->mindelsize = abs(alignment->core.isize) - range[1];
                 evdnc->max = range[1];
 
-                // I probably should not include this as evidence if both the
-                // reads were mapped with a low mapping quality. In most cases I
-                // should be able to look at the MQ tag and tell the mapping
-                // quality of the mate(if they have used BWA to align the reads)
+                // I probably should not include this as evidence if both 
+                // reads were mapped with a low mapping quality. In most 
+                // cases I should be able to look at the MQ tag and tell 
+                // the mapping quality of the mate(if they have used BWA to 
+                // align the reads)
                 int smq = alignment->core.qual;
-                int mmq = bam_aux2i(bam_aux_get(alignment, "MQ"));
+                uint8_t* pmmq = bam_aux_get(alignment, "MQ");
+                int mmq;
+                if (pmmq == NULL) {
+                    // in this case the aligner did not tell me about the mates
+                    // mapping quality. Lets assume it is the same as that of 
+                    // this sequence
+                    mmq = alignment->core.qual;
+                } else {
+                    forceassert(pmmq[0] == 'i');
+                    mmq = bam_aux2i(pmmq);
+                }
                     
                 if((smq >= qthreshold) || (mmq >= qthreshold)){
                     sladdhead(&alndata->allevidence, evdnc);
@@ -559,6 +602,7 @@ static int fetch_func(const bam1_t* alignment, void* data)
                     evdnc->isused = TRUE;
                     free_used_evidence(evdnc);
                 }
+next:
                 remove_hashtable_entry(readpairs, 
                                        bam1_qname(alignment), 
                                        alignment->core.l_qname);
