@@ -23,21 +23,11 @@ larger variants that are frequently missed with the split-read approach.
 
 ## INSTALLATION
 indelMINER uses the SAMtools (http://samtools.sourceforge.net) API to 
-manipulate files in the BAM (Binary Alignment/Mapping) format. 
+manipulate files in the BAM (Binary Alignment/Mapping) format. Current version
+of indelMINER comes with the version 0.1.19 of SAMtools included as part of the
+distribution.
 
-Please add the full path of your SAMtools installation to the Makefile in the 
-distribution folder. For example, If your SAMtools installation is at 
-/home/foo/samtools-0.1.18, then please replace the lines
-```
-INCDIR = 
-LNKDIR = 
-```
-with the following in the Makefile
-```
-INCDIR = /home/foo/samtools-0.1.18
-LNKDIR = /home/foo/samtools-0.1.18
-```
-Then, type:
+Type:
 ```
 make 
 ```
