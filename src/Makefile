@@ -3,8 +3,8 @@ CC = gcc
 OPTIMIZATIONS=
 CFLAGS=
 
-INCDIR = 
-LNKDIR = 
+INCDIR = `pwd`/samtools-0.1.19
+LNKDIR = `pwd`/samtools-0.1.19
 
 # the default is the production build without any profiling information
 PROD ?= 1
@@ -29,7 +29,10 @@ endif
 	
 all: binaries
 
-binaries: indelminer
+binaries: samtools indelminer
+
+samtools:
+	cd samtools-0.1.19 && $(MAKE) 
 
 indelminer:asserts.h \
 	       constants.h \
@@ -79,5 +82,6 @@ indelminer:asserts.h \
 .PHONY: clean archive
 
 clean:
+	cd samtools-0.1.19 && $(MAKE) clean
 	rm *.o
 	rm indelminer
