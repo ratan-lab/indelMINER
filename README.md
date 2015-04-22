@@ -11,6 +11,8 @@ indelMINER should work on any standard 64 bit Linux environment with
 
 ## ACKNOWLEDGEMENTS
 indelMINER uses Paul Hsieh's Superfasthash (http://www.azillionmonkeys.com/qed/hash.html) hash function. The hash function is encapsulated in the source file superfasthash.c within this distribution.
+indelMINER also includes the 0.1.19 version of SAMtools by Heng Li as part of
+the distribution.
 
 ## SUMMARY
 indelMINER refers to a set of algorithms to identify indels from whole genome 

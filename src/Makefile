@@ -77,7 +77,7 @@ indelminer:asserts.h \
 	errors.o memalloc.o strings.o resources.o files.o sequences.o slinklist.o \
 	superfasthash.o hashtable.o shared.o bamoperations.o readaln.o evidence.o \
 	graph.o variant.o globalalign.o localalign.o alignment.o \
-	indelminer.c -lbam -lz -lm
+	indelminer.c -lbam -lz -lm -lpthread
 
 .PHONY: clean archive
 
