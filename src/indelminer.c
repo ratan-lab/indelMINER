@@ -56,6 +56,9 @@ bool call_all_indels;
 // maximum differences allowed in the alignments
 uint maxdiffsallowed;
 
+// minimum number of bases on either side of at least one read
+uint minbalance;
+
 typedef struct alignmentdata_st
 {
     struct alignmentdata_st* next;
@@ -901,6 +904,8 @@ static void print_help(FILE* file)
     fprintf(file, "\t-k, length of the kmers to be used in alignments[6]\n");
     fprintf(file, "\t-g, number of gaps allowed in the alignments[0]\n");
     fprintf(file, "\t-f, number of differences allowed in an alignment[6]\n");
+    fprintf(file, "\t-b, require at least one read with these bases on \n");
+    fprintf(file, "\t    either side of the indel[30]\n");
     fprintf(file, "\n");  
     fprintf(file, "Assumptions:\n");
     fprintf(file, "\tThe BAM file is coordinate sorted\n");
@@ -932,10 +937,11 @@ int main(int argc, char** argv)
     ethreshold_vcfcheck = ethreshold;
     call_all_indels = FALSE;
     maxdiffsallowed = 6;
+    minbalance = 30;
 
     int c;
     while(1){
-        c = getopt(argc,argv,"dl:hc:e:o:k:g:x:i:s:p:tn:q:af:");
+        c = getopt(argc,argv,"dl:hc:e:o:k:g:x:i:s:p:tn:q:af:b:");
 
         if (c == -1) break;
         switch (c){
@@ -1001,6 +1007,10 @@ int main(int argc, char** argv)
                 break;
             case 'a':
                 call_all_indels = TRUE;
+                break;
+            case 'b':
+                if(sscanf(optarg, "%u", &minbalance) != 1)
+                    fatalf("incorrect option for -b: %s\n", optarg);
                 break;
             case '?':
                 break;

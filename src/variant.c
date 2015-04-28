@@ -2,6 +2,7 @@
 
 extern uint maxdelsize;
 extern uint maxpedelsize;
+extern uint minbalance;
 extern bool call_all_indels;
 
 #define SUB 0
@@ -732,7 +733,7 @@ void print_variants(variant** const pvariants,
                     default: fatalf("unhandled BAM operation");
                 }
             }
-            if(ltmp >= 30) left = TRUE;
+            if(ltmp >= minbalance) left = TRUE;
     
             uint rtmp = 0;
             for(iter2 = iter->evidence[i]->aln3; iter2; iter2 = iter2->next){
@@ -764,7 +765,7 @@ void print_variants(variant** const pvariants,
                     default: fatalf("unhandled BAM operation");
                 }
             }
-            if(rtmp >= 30) right = TRUE;
+            if(rtmp >= minbalance) right = TRUE;
 
             if(abs(rtmp - ltmp) < balance) {
                 balance = abs(rtmp - ltmp);
@@ -774,8 +775,7 @@ void print_variants(variant** const pvariants,
         }
         uint xnumdiffs = (int)(numdiffs * 1.0 / iter->support) + 0.5;
 
-        if(((iter->type == DELETION && lflank >= 30 && rflank >= 30) ||
-(iter->type == INSERTION && (lflank >= 30 || rflank >= 30))) && (iter->support >= minsupport) && (xnumdiffs <= maxdiffsallowed) && left && right){
+        if(((iter->type == DELETION && lflank >= minbalance && rflank >= minbalance) || (iter->type == INSERTION && (lflank >= minbalance || rflank >= minbalance))) && (iter->support >= minsupport) && (xnumdiffs <= maxdiffsallowed) && left && right){
             sladdhead(&selectedvariants, iter);
         }else{
             sladdhead(&filteredvariants, iter);
