@@ -14,6 +14,10 @@ indelMINER uses Paul Hsieh's Superfasthash (http://www.azillionmonkeys.com/qed/h
 indelMINER also includes the 0.1.19 version of SAMtools by Heng Li as part of
 the distribution.
 
+I would like to thank the following users for bug reports and other
+contributions towards the on-going development of indelMINER.
+- Trent Walradt, Yale School of Medicine
+
 ## SUMMARY
 indelMINER refers to a set of algorithms to identify indels from whole genome 
 resequencing datasets using paired-end reads. indelMINER uses a split-read 
@@ -88,3 +92,28 @@ to use it in a run of indelMINER, please do the following:
 ./../src/indelminer -i indelminer.config reference.fa sample=alignments.bam > indelminer.flt.vcf
 ```
 
+## APPLICATION NOTES
+### TUMOR/NORMAL PAIRS
+In cases where you have a BAM file of alignments from a tumor sample, the first
+step is to run indelMINER on the tumor sample.
+
+```
+indelminer reference.fa tumor=tumor.bam > tumor.vcf
+```
+
+This identifies all the indels in the tumor sample. You might want to change a
+few of the arguments to indelMINER in this command based on yoru dataset.
+Specially you might want to supply a configuration file, which might make
+indelMINER run faster. You might want to change "-b" if you have smaller size
+reads (The defaults work well for 100 bp reads).
+
+One you have the indels in the tumor, run indelMINER to annotate those indels
+based on their presence/absence in the normal.
+
+```
+indelminer -q 0 -a -e 1 reference.fa tumor.vcf normal=normal.bam > tumor.normal.vcf
+```
+
+This adds an annotation "normal" to each variant in tumor.vcf if it is also seen
+in the normal. Using "-q 0 -a -e 1" ensures that any sign of its presence in the
+tumor is considered.
