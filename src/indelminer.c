@@ -465,7 +465,6 @@ static int fetch_func(const bam1_t* alignment, void* data)
                     // this sequence
                     mmq = alignment->core.qual;
                 } else {
-                    forceassert(pmmq[0] == 'i');
                     mmq = bam_aux2i(pmmq);
                 }
                 if(mmq >= qthreshold){
@@ -595,7 +594,6 @@ static int fetch_func(const bam1_t* alignment, void* data)
                     // this sequence
                     mmq = alignment->core.qual;
                 } else {
-                    forceassert(pmmq[0] == 'i');
                     mmq = bam_aux2i(pmmq);
                 }
                     
