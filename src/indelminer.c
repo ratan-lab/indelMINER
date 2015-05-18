@@ -348,6 +348,7 @@ static int fetch_func(const bam1_t* alignment, void* data)
     if((alignment->core.flag & 0x100) == 0x100) return 0;
     if((alignment->core.flag & 0x200) == 0x200) return 0;
     if((alignment->core.flag & 0x400) == 0x400) return 0;
+    if((alignment->core.flag & 0x800) == 0x800) return 0;
 
     bool is_aligned = (alignment->core.flag & 0x4) == 0;
     bool is_mate_aligned = (alignment->core.flag & 0x8) == 0;
