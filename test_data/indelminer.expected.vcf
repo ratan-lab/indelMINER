@@ -1,5 +1,5 @@
 ##fileformat=VCFv4.1
-##indelminerVersion=0.10
+##indelminerVersion=0.20
 ##INFO=<ID=INSERTION,Number=0,Type=Flag,Description="Indicates that the variant is an insertion.">
 ##INFO=<ID=DELETION,Number=0,Type=Flag,Description="Indicates that the variant is a deletion.">
 ##INFO=<ID=SPLIT_READ,Number=0,Type=Flag,Description="Indicates that at least one split read supports this variant.">
