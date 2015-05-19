@@ -23,7 +23,7 @@
 #include "graph.h"
 #include "alignment.h"
 
-#define indelminer_VERSION 0.1
+#define indelminer_VERSION 0.2
 
 #define READCHUNK 100000
 
