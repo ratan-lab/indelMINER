@@ -1434,6 +1434,12 @@ static int check_for_indel(const bam1_t* alignment, void* data)
         return TRUE;  
     }
 
+    // nothing to be done if this is a secondary or supplementary alignment
+    if((alignment->core.flag & 0x100) == 0x100) return TRUE;
+    if((alignment->core.flag & 0x200) == 0x200) return TRUE;
+    if((alignment->core.flag & 0x400) == 0x400) return TRUE;
+    if((alignment->core.flag & 0x800) == 0x800) return TRUE;
+
     // if some read already supports this indel, then I do not need to do
     // anything else
     if(variant->diffsample_support == TRUE){
