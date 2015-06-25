@@ -747,6 +747,9 @@ static void indelminer(const char* const configfile,
     if(vcfname != NULL){
         printf("##INFO=<ID=%s,Number=0,Type=Flag,Description=\"The variant is also present in this sample\">\n", sample_name);
     }
+    if(strncmp(outputformat, "vcf", 3) == 0){
+        printf("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n");
+    }
 
     fp = bam_open(bam_name, "r");
     hin = bam_header_read(fp);

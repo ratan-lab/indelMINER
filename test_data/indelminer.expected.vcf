@@ -16,6 +16,7 @@
 ##INFO=<ID=DF,Number=1,Type=Integer,Description="Average number of other differences on reads supporting the reported variant">
 ##INFO=<ID=DP,Number=1,Type=Integer,Description="Average read depth across the breakpoints">
 ##INFO=<ID=BF,Number=2,Type=Integer,Description="Flanks from the split read or pair best sorrounding the variant">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
 reference	1000	.	TC	T	.	.	DELETION;SPLIT_READ;NS=45;END=1002;BP_END=1003;NFS=27;NRS=18;UTAILS=27;MQ=60;MQ30=45;DF=0;DP=39;BF=48,52
 reference	2000	.	CCGA	C	.	.	DELETION;SPLIT_READ;NS=53;END=2004;BP_END=2004;NFS=22;NRS=31;UTAILS=31;MQ=51;MQ30=39;DF=0;DP=26;BF=50,50
 reference	2998	.	TCAGGA	T	.	.	DELETION;SPLIT_READ;NS=56;END=3004;BP_END=3006;NFS=23;NRS=33;UTAILS=35;MQ=44;MQ30=28;DF=0;DP=30;BF=51,49
