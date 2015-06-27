@@ -28,7 +28,7 @@ bin* add_hashtable(hashtable* const hash,  /*the hashtable*/
 {
     pre(name != NULL);
 
-	uint32_t index =  superfasthash(name, length);
+	uint32_t index =  hashfunc(name, length);
 	index = index & hash->mask;
 	
 	char* hname = ckalloc(length+1);
@@ -65,7 +65,7 @@ void* lookup_hashtable(hashtable* const hash,
 {
     pre(name != NULL);
 
-	uint32_t index = superfasthash(name, len);
+	uint32_t index = hashfunc(name, len);
 	index = index & hash->mask;
 	
 	bin* iter = NULL;
@@ -123,7 +123,7 @@ void* remove_hashtable_entry(hashtable* const hash,
 {
     pre(name != NULL);
 
-	uint32_t index = superfasthash(name, len);
+	uint32_t index = hashfunc(name, len);
 	index = index & hash->mask;
 	
 	bin* iter = NULL;
@@ -221,4 +221,3 @@ void print_hashtable(hashtable* const hash)
 {
 	func_hashtable(hash, print_names);
 }
-
