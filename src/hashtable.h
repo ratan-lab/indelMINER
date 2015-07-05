@@ -8,7 +8,7 @@
 #include "asserts.h"
 #include "memalloc.h"
 #include "slinklist.h"
-#include "superfasthash.h"
+#include "hashfunc.h"
 
 typedef struct bin_st
 {

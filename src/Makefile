@@ -42,7 +42,7 @@ indelminer:asserts.h \
 		   files.h files.c \
 		   sequences.h sequences.c \
 		   slinklist.h slinklist.c \
-		   superfasthash.h superfasthash.c \
+		   hashfunc.h hashfunc.c \
 		   hashtable.h hashtable.c \
 		   shared.h shared.c \
 		   bamoperations.h bamoperations.c \
@@ -61,7 +61,7 @@ indelminer:asserts.h \
 	$(CC) $(CFLAGS) -c files.c
 	$(CC) $(CFLAGS) -c sequences.c
 	$(CC) $(CFLAGS) -c slinklist.c
-	$(CC) $(CFLAGS) -c superfasthash.c
+	$(CC) $(CFLAGS) -c hashfunc.c
 	$(CC) $(CFLAGS) -c hashtable.c
 	$(CC) $(CFLAGS) -c -I$(INCDIR) shared.c
 	$(CC) $(CFLAGS) -c -I$(INCDIR) bamoperations.c
@@ -75,7 +75,7 @@ indelminer:asserts.h \
 	$(CC) $(CFLAGS) -I$(INCDIR) -L$(LNKDIR) \
 	-o indelminer \
 	errors.o memalloc.o strings.o resources.o files.o sequences.o slinklist.o \
-	superfasthash.o hashtable.o shared.o bamoperations.o readaln.o evidence.o \
+	hashfunc.o hashtable.o shared.o bamoperations.o readaln.o evidence.o \
 	graph.o variant.o globalalign.o localalign.o alignment.o \
 	indelminer.c -lbam -lz -lm -lpthread
 
