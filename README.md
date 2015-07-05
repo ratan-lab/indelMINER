@@ -18,6 +18,7 @@ I would like to thank the following users for bug reports and other
 contributions towards the on-going development of indelMINER.
 - Trent Walradt, Yale School of Medicine
 - Pieter Busschaert, University of Leuven
+- Joao Rietra, Recife, Brazil for updates to the hash functions 
 
 ## SUMMARY
 indelMINER refers to a set of algorithms to identify indels from whole genome 
