@@ -393,7 +393,9 @@ static int fetch_func(const bam1_t* alignment, void* data)
             // this sequence      
             mmq = alignment->core.qual;
         } else {
-            forceassert(pmmq[0] == 'i' || pmmq[0] == 'I' || pmmq[0] == 'C');
+            forceassert(pmmq[0] == 'I' || pmmq[0] == 'i' || 
+                        pmmq[0] == 'C' || pmmq[0] == 'c' ||  
+                        pmmq[0] == 'S' || pmmq[0] == 's');
             mmq = bam_aux2i(pmmq);
         }
 
